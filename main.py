@@ -50,7 +50,7 @@ class Cactus(pygame.sprite.Sprite):
 class Dino():
     def __init__(self):
         self.image = pygame.image.load("T-rex game/dino.png")
-        self.image = pygame.transform.scale(self.image, (100,100))
+        self.image = pygame.transform.scale(self.image, (80,80))
         self.rect = self.image.get_rect()
         self.rect.left = 10
         self.rect.bottom = int(HEIGHT*0.96) 
@@ -58,10 +58,16 @@ class Dino():
         screen.blit(self.image, self.rect)
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]: #press space bar to make dino jump
-            self.rect.bottom = int(HEIGHT*0.96) - 100
-        elif not keys[pygame.K_SPACE]:
+        if keys[pygame.K_UP]: #press space bar to make dino jump
+            self.rect.bottom = int(HEIGHT*0.96) - 120
+        elif not keys[pygame.K_UP]:
             self.rect.bottom = int(HEIGHT*0.96) 
+
+def checkcollsion(a, b): #a is the dino/stationary object, b is the cactus
+    if a.rect.left >= b.rect.left and a.rect.bottom >= b.rect.top:
+        return True
+    else:
+        return False
 
 
 #objects
@@ -104,8 +110,9 @@ while running:
     dino.draw()
     dino.update()
 
-
-
+    for c in cacti:
+        if checkcollsion(dino, c):
+            print ("collsion detected")
 
     
 
